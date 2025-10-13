@@ -2,9 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hello World</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚽ Football Matchmaker: Find Your Player Match!</title>
+  <!-- Link to external CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Hello, World!</h1>
+  <h1>⚽ Football Matchmaker ⚽</h1>
+  <p>Find out which football star matches your personality!</p>
+
+  <form id="matchForm">
+    <label for="name">Your Name:</label>
+    <input type="text" id="name" placeholder="Enter your name" required>
+
+    <label for="position">Favorite Position:</label>
+    <select id="position">
+      <option value="striker">Striker</option>
+      <option value="midfielder">Midfielder</option>
+      <option value="defender">Defender</option>
+      <option value="goalkeeper">Goalkeeper</option>
+    </select>
+
+    <label for="style">Playing Style:</label>
+    <select id="style">
+      <option value="aggressive">Aggressive</option>
+      <option value="creative">Creative</option>
+      <option value="strategic">Strategic</option>
+      <option value="calm">Calm under pressure</option>
+    </select>
+
+    <button type="button" onclick="findFootballMatch()">Find My Match!</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    function findFootballMatch() {
+      const name = document.getElementById("name").value;
+      const position = document.getElementById("position").value;
+      const style = document.getElementById("style").value;
+      const resultDiv = document.getElementById("result");
+
+      let match = "";
+
+      if (position === "striker" && style === "aggressive") match = "Cristiano Ronaldo ⚡ — Powerful and driven!";
+      else if (position === "midfielder" && style === "creative") match = "Lionel Messi 🎨 — A true artist of the game!";
+      else if (position === "defender" && style === "strategic") match = "Virgil van Dijk 🧱 — Calm, composed, and unbeatable!";
+      else if (position === "goalkeeper" && style === "calm") match = "Manuel Neuer 🧤 — Ice-cold under pressure!";
+      else match = "Kylian Mbappé 🚀 — Fast, fearless, and full of energy!";
+
+      resultDiv.textContent = `Hey ${name}! Your football match is ${match}`;
+      resultDiv.style.display = "block";
+    }
+  </script>
 </body>
 </html>
