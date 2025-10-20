@@ -1,58 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>⚽ Football Matchmaker: Find Your Player Match!</title>
-  <!-- Link to external CSS -->
-  <link rel="stylesheet" href="style.css">
+  <link rel = "stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Matchmaker Futbul Addtion</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 700px; margin: auto; }
+    label { font-weight: bold; }
+    select { margin-top: 6px; margin-bottom: 12px; display:block; }
+    #compatibility { margin-top: 18px; font-size: 1.1rem; font-weight: bold; }
+    #remark { margin-top: 8px; font-size: 1rem; }
+  </style>
 </head>
 <body>
-  <h1>⚽ Football Matchmaker ⚽</h1>
-  <p>Find out which football star matches your personality!</p>
+  <h1>Matchmaker Futbul Addtion</h1>
+  <p>Choose an answer for each question and click <em>Calculate Compatibility</em>.</p>
 
-  <form id="matchForm">
-    <label for="name">Your Name:</label>
-    <input type="text" id="name" placeholder="Enter your name" required>
+  <label for="Question1">Messi is the greatest of all time:</label>
+  <select id="Question1">
+    <option value="5">Strongly Agree</option>
+    <option value="4">Agree</option>
+    <option value="3">Neutral</option>
+    <option value="2">Disagree</option>
+    <option value="1">Strongly Disagree</option>
+  </select>
 
-    <label for="position">Favorite Position:</label>
-    <select id="position">
-      <option value="striker">Striker</option>
-      <option value="midfielder">Midfielder</option>
-      <option value="defender">Defender</option>
-      <option value="goalkeeper">Goalkeeper</option>
-    </select>
+  <label for="Question2">FC Barcelona is the greatest football club:</label>
+  <select id="Question2">
+    <option value="5">Strongly Agree</option>
+    <option value="4">Agree</option>
+    <option value="3">Neutral</option>
+    <option value="2">Disagree</option>
+    <option value="1">Strongly Disagree</option>
+  </select>
 
-    <label for="style">Playing Style:</label>
-    <select id="style">
-      <option value="aggressive">Aggressive</option>
-      <option value="creative">Creative</option>
-      <option value="strategic">Strategic</option>
-      <option value="calm">Calm under pressure</option>
-    </select>
+  <label for="Question3">Pedri will win the Ballon d'Or before Mbappé:</label>
+  <select id="Question3">
+    <option value="5">Strongly Agree</option>
+    <option value="4">Agree</option>
+    <option value="3">Neutral</option>
+    <option value="2">Disagree</option>
+    <option value="1">Strongly Disagree</option>
+  </select>
 
-    <button type="button" onclick="findFootballMatch()">Find My Match!</button>
-  </form>
+  <label for="Question4">Lewandowski is the best striker in the world:</label>
+  <select id="Question4">
+    <option value="5">Strongly Agree</option>
+    <option value="4">Agree</option>
+    <option value="3">Neutral</option>
+    <option value="2">Disagree</option>
+    <option value="1">Strongly Disagree</option>
+  </select>
 
-  <div id="result"></div>
+  <label for="Question5">Pedri is better than Bellingham:</label>
+  <select id="Question5">
+    <option value="5">Strongly Agree</option>
+    <option value="4">Agree</option>
+    <option value="3">Neutral</option>
+    <option value="2">Disagree</option>
+    <option value="1">Strongly Disagree</option>
+  </select>
+
+  <button onclick="calculateCompatibility()">Calculate Compatibility</button>
+
+  <p id="compatibility"></p>
+  <p id="remark"></p>
 
   <script>
-    function findFootballMatch() {
-      const name = document.getElementById("name").value;
-      const position = document.getElementById("position").value;
-      const style = document.getElementById("style").value;
-      const resultDiv = document.getElementById("result");
+    // Desired answers for each question (1-5 scale)
+    const DESIRED_RESPONSE = [5, 4, 3, 4, 2];
+    const MAX_SCORE_PER_QUESTION = 5;
 
-      let match = "";
+    function calculateCompatibility() {
+      console.log("calculateCompatibility() started");
 
-      if (position === "striker" && style === "aggressive") match = "Cristiano Ronaldo ⚡ — Powerful and driven!";
-      else if (position === "midfielder" && style === "creative") match = "Lionel Messi 🎨 — A true artist of the game!";
-      else if (position === "defender" && style === "strategic") match = "Virgil van Dijk 🧱 — Calm, composed, and unbeatable!";
-      else if (position === "goalkeeper" && style === "calm") match = "Manuel Neuer 🧤 — Ice-cold under pressure!";
-      else match = "Kylian Mbappé 🚀 — Fast, fearless, and full of energy!";
+      const q1 = Number(document.getElementById("Question1").value);
+      const q2 = Number(document.getElementById("Question2").value);
+      const q3 = Number(document.getElementById("Question3").value);
+      const q4 = Number(document.getElementById("Question4").value);
+      const q5 = Number(document.getElementById("Question5").value);
 
-      resultDiv.textContent = `Hey ${name}! Your football match is ${match}`;
-      resultDiv.style.display = "block";
+      const responses = [q1, q2, q3, q4, q5];
+
+      let totalScore = 0;
+      for (let i = 0; i < responses.length; i++) {
+        const diff = Math.abs(responses[i] - DESIRED_RESPONSE[i]);
+        const questionScore = MAX_SCORE_PER_QUESTION - diff;
+        totalScore += questionScore;
+      }
+
+      const maxTotal = MAX_SCORE_PER_QUESTION * DESIRED_RESPONSE.length;
+      const percent = Math.round((totalScore / maxTotal) * 100);
+
+      // Show numeric results
+      document.getElementById("compatibility").textContent =
+        `Score: ${totalScore} / ${maxTotal}  —  Compatibility: ${percent}%`;
+
+      // Choose a fun remark based on percent (this must be inside the function)
+      let remarkText = "";
+      if (percent >= 90) {
+        remarkText = "🔥 Perfect Match! You’re basically football soulmates!";
+      } else if (percent >= 70) {
+        remarkText = "⚽ Strong chemistry! You’ve got great football vibes together.";
+      } else if (percent >= 50) {
+        remarkText = "🙂 Not bad — some shared passion, some friendly debate!";
+      } else if (percent >= 30) {
+        remarkText = "😅 Opposites attract? You might need some match analysis sessions.";
+      } else {
+        remarkText = "💔 Yikes! You’re from different leagues — but never say never!";
+      }
+
+      document.getElementById("remark").textContent = remarkText;
     }
   </script>
 </body>
